@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      type="module"
+      src="../web-components-lib/molecules/bookItem.js"
+    ></script>
+    <script
+      type="module"
+      src="../web-components-lib/molecules/searchInput.js"
+    ></script>
+    <script
+      type="module"
+      src="../web-components-lib/molecules/sidebar.js"
+    ></script>
+    <script type="module" src="../web-components-lib/atoms/title.js"></script>
+    <script type="module" src="../web-components-lib/atoms/label.js"></script>
+    <title>Web components</title>
+  </head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  </style>
+  <script>
+    // Function to make the fetch GET request
+    function fetchData() {
+      fetch("https://www.dbooks.org/api/recent")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status === "ok" && data.books && data.books.length > 0) {
+            const booksContainer = document.querySelector(".books-container");
+
+            data.books.slice(0, 5).forEach((book) => {
+              // Create a new book-item-component element
+              const bookItem = document.createElement("book-item-component");
+
+              // Set the props for the component
+              bookItem.title = book.title;
+              bookItem.label = book.authors;
+              bookItem.path = book.image;
+
+              // Append the book-item-component to the container
+              booksContainer.appendChild(bookItem);
+            });
+          }
+        })
+        .catch((error) => {
+          // Handle errors here
+          console.error("There was a problem with the fetch operation:", error);
+        });
+    }
+
+    // Call the fetchData function when the page loads
+    window.addEventListener("load", fetchData);
+  </script>
+  <body>
+    <div style="display: flex; justify-content: center">
+      <div style="padding: 50px; max-width: 57.375rem; margin-right: 22.625rem">
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <div style="line-height: 25px">
+            <title-component text="Most recent books"></title-component>
+            <label-component
+              text="Here you can visualize the most recent added books."
+            ></label-component>
+          </div>
+            <div
+              class="books-container"
+              style="
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                row-gap: 20px;
+                margin-bottom: 40px;
+              "
+            >
+              <!-- Book items will be dynamically added here -->
+            </div>
+          </div>
+          <div
+            style="
+              display: flex;
+              align-items: end;
+              justify-content: space-between;
+            "
+          >
+            <div>
+              <title-component text="Search for books"></title-component>
+              <label-component
+                text="Here you can search your book of interest by the name
+              of the author or book title."
+              ></label-component>
+            </div>
+            <div>
+              <search-input-component></search-input-component>
+            </div>
+          </div>
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              flex-wrap: wrap;
+              justify-content: space-between;
+              row-gap: 20px;
+            "
+          >
+            <div style="flex: 0 1 calc(20% - 20px); margin-bottom: 20px">
+              <book-item-component></book-item-component>
+            </div>
+          </div>
+        </div>
+        <div>
+          <sidebar-component></sidebar-component>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
