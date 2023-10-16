@@ -17,6 +17,11 @@ class TitleComponent extends HTMLElement {
           font-weight: bold;
           font-family: 'Libre Baskerville', serif;
         }
+        .ellipsed {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       </style>
       <div class="title" id="title"></div>
     `;
@@ -62,6 +67,19 @@ class TitleComponent extends HTMLElement {
     }
   }
 
+  // Define a getter and setter for the ellipsed property
+  get ellipsed() {
+    return this.hasAttribute("ellipsed");
+  }
+
+  set ellipsed(value) {
+    if (value) {
+      this.setAttribute("ellipsed", "");
+    } else {
+      this.removeAttribute("ellipsed");
+    }
+  }
+
   // Called when the component is connected to the DOM
   connectedCallback() {
     this.updateTitle();
@@ -73,20 +91,29 @@ class TitleComponent extends HTMLElement {
       (name === "text" ||
         name === "size" ||
         name === "bold" ||
-        name === "color") &&
+        name === "color" ||
+        name === "ellipsed") &&
       oldValue !== newValue
     ) {
       this.updateTitle();
     }
   }
 
-  // Update the title text
+  // Update the title text and styles
   updateTitle() {
     const titleElement = this.shadowRoot.getElementById("title");
     titleElement.textContent = this.text || "Default Title";
     titleElement.style.fontWeight = this.bold ? "bolder" : "bold";
     titleElement.style.fontSize = this.size;
     titleElement.style.color = this.color;
+
+    // Check if the ellipsed attribute is set and apply ellipsis styles
+    if (this.ellipsed) {
+      titleElement.classList.add("ellipsed");
+    } else {
+      titleElement.classList.remove("ellipsed");
+    }
   }
 }
+
 customElements.define("title-component", TitleComponent);

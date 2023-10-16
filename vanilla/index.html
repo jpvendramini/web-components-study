@@ -6,22 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <script
-      type="module"
-      src="../web-components-lib/molecules/bookItem.js"
-    ></script>
-    <script
-      type="module"
-      src="../web-components-lib/molecules/searchInput.js"
-    ></script>
-    <script
-      type="module"
-      src="../web-components-lib/molecules/sidebar.js"
-    ></script>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap"rel="stylesheet"/>
+    <script type="module" src="../web-components-lib/molecules/bookItem.js"></script>
+    <script type="module" src="../web-components-lib/molecules/searchInput.js"></script>
+    <script type="module" src="../web-components-lib/molecules/sidebar.js"></script>
     <script type="module" src="../web-components-lib/atoms/title.js"></script>
     <script type="module" src="../web-components-lib/atoms/label.js"></script>
     <title>Web components</title>
@@ -32,44 +20,20 @@
       padding: 0;
       box-sizing: border-box;
     }
-  </style>
-  <script>
-    // Function to make the fetch GET request
-    function fetchData() {
-      fetch("https://www.dbooks.org/api/recent")
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if (data.status === "ok" && data.books && data.books.length > 0) {
-            const booksContainer = document.querySelector(".books-container");
-
-            data.books.slice(0, 5).forEach((book) => {
-              // Create a new book-item-component element
-              const bookItem = document.createElement("book-item-component");
-
-              // Set the props for the component
-              bookItem.title = book.title;
-              bookItem.label = book.authors;
-              bookItem.path = book.image;
-
-              // Append the book-item-component to the container
-              booksContainer.appendChild(bookItem);
-            });
-          }
-        })
-        .catch((error) => {
-          // Handle errors here
-          console.error("There was a problem with the fetch operation:", error);
-        });
+    *::-webkit-scrollbar {
+      width: 8px; /* width of the entire scrollbar */
     }
 
-    // Call the fetchData function when the page loads
-    window.addEventListener("load", fetchData);
-  </script>
+    *::-webkit-scrollbar-track {
+      background: #9B9B9B; /* color of the tracking area */
+    }
+      
+    *::-webkit-scrollbar-thumb {
+      background-color: #fff; /* color of the scroll thumb */
+      border-radius: 8px; /* roundness of the scroll thumb */
+      background-clip: padding-box;
+    }
+  </style>
   <body>
     <div style="display: flex; justify-content: center">
       <div style="padding: 50px; max-width: 57.375rem; margin-right: 22.625rem">
@@ -99,6 +63,7 @@
               display: flex;
               align-items: end;
               justify-content: space-between;
+              margin-bottom: 20px;
             "
           >
             <div>
@@ -109,27 +74,142 @@
               ></label-component>
             </div>
             <div>
-              <search-input-component></search-input-component>
+              <search-input-component value="Initial Value"></search-input-component>
             </div>
           </div>
-          <div
+          <div class="searched-books-container"               
             style="
-              display: flex;
-              flex-direction: row;
-              flex-wrap: wrap;
-              justify-content: space-between;
-              row-gap: 20px;
-            "
-          >
-            <div style="flex: 0 1 calc(20% - 20px); margin-bottom: 20px">
-              <book-item-component></book-item-component>
-            </div>
-          </div>
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            row-gap: 20px;
+            margin-bottom: 40px;
+          "></div>
         </div>
         <div>
           <sidebar-component></sidebar-component>
         </div>
       </div>
     </div>
+
+    <script>
+      const sidebar = document.querySelector("sidebar-component");
+
+      let currentBookId = "";
+
+      function getBookDetails(bookId){
+        if(currentBookId != bookId){
+          fetch("https://www.dbooks.org/api/book/"+bookId)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            sidebar.bookInfo = data;
+            currentBookId = data.id;
+          })
+        }else{
+          sidebar.bookInfo = null;
+          currentBookId = "";
+        }
+      }
+
+      // Function to make the fetch GET request
+      function fetchSearchedData(query){
+        if(query != ""){
+          const booksContainer = document.querySelector(".searched-books-container");
+          // Clear the current content of the container
+          while (booksContainer.firstChild) {
+            booksContainer.removeChild(booksContainer.firstChild);
+          }
+          fetch("https://www.dbooks.org/api/search/"+query)          
+          .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })          
+            .then((data) => {
+              if (data.status === "ok" && data.books && data.books.length > 0) {
+                const booksContainer = document.querySelector(".searched-books-container");
+  
+                data.books.forEach((book) => {
+                  // Create a new book-item-component element
+                  const bookItem = document.createElement("book-item-component");
+  
+                  // Set the props for the component
+                  bookItem.title = book.title;
+                  bookItem.label = book.authors;
+                  bookItem.path = book.image;
+                  bookItem.onclick = () => getBookDetails(book.id);
+  
+                  // Append the book-item-component to the container
+                  booksContainer.appendChild(bookItem);
+                });
+              }
+            })
+        }
+      }
+
+      function fetchData() {
+        fetch("https://www.dbooks.org/api/recent")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.status === "ok" && data.books && data.books.length > 0) {
+              const booksContainer = document.querySelector(".books-container");
+
+              data.books.slice(0, 5).forEach((book) => {
+                // Create a new book-item-component element
+                const bookItem = document.createElement("book-item-component");
+
+                // Set the props for the component
+                bookItem.title = book.title;
+                bookItem.label = book.authors;
+                bookItem.path = book.image;
+                bookItem.onclick = () => getBookDetails(book.id);
+
+                // Append the book-item-component to the container
+                booksContainer.appendChild(bookItem);
+              });
+            }
+          })
+
+        }
+
+      // Call the fetchData function when the page loads
+      window.addEventListener("load", fetchData);
+
+      let searchInputTimer;
+
+      function handleSearchInputChange(event) {
+        // Clear the previous timer, if it exists
+        if (searchInputTimer) {
+          clearTimeout(searchInputTimer);
+        }
+
+        // Set a new timer to log the value after 3 seconds with no changes
+        searchInputTimer = setTimeout(() => {
+          fetchSearchedData(event.detail)
+        }, 3000); // 3000 milliseconds (3 seconds)
+      }
+
+      // Wait for the DOM to load before adding the event listener
+      document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.querySelector("search-input-component");
+
+        // Listen for the custom event "value-changed" and call the handler
+        searchInput.addEventListener("value-changed", handleSearchInputChange);
+        fetchSearchedData("programming");
+      });
+    </script>
+
   </body>
 </html>

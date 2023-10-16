@@ -15,6 +15,11 @@ class LabelComponent extends HTMLElement {
           font-family: 'Open Sans', sans-serif;
           font-weight: normal;
         }
+        .ellipsed {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       </style>
       <div class="label" id="label"></div>
     `;
@@ -51,6 +56,18 @@ class LabelComponent extends HTMLElement {
     }
   }
 
+  get ellipsed() {
+    return this.hasAttribute("ellipsed");
+  }
+
+  set ellipsed(value) {
+    if (value) {
+      this.setAttribute("ellipsed", "");
+    } else {
+      this.removeAttribute("ellipsed");
+    }
+  }
+
   // Define a getter and setter for the color property
   get color() {
     return this.getAttribute("color") || "#232323"; // Default color
@@ -71,7 +88,8 @@ class LabelComponent extends HTMLElement {
       name === "text" ||
       name === "size" ||
       name === "bold" ||
-      name === "color"
+      name === "color" ||
+      name === "ellipsed"
     ) {
       this.updateTitle();
     }
@@ -84,6 +102,13 @@ class LabelComponent extends HTMLElement {
     titleElement.style.fontSize = this.size;
     titleElement.style.fontWeight = this.bold ? "bold" : "normal";
     titleElement.style.color = this.color;
+
+    // Check if the ellipsed attribute is set and apply ellipsis styles
+    if (this.ellipsed) {
+      titleElement.classList.add("ellipsed");
+    } else {
+      titleElement.classList.remove("ellipsed");
+    }
   }
 }
 customElements.define("label-component", LabelComponent);
