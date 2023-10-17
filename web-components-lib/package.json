@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "name": "web-components-lib",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "rollup -c  --bundleConfigAsCjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^4.1.4"
+  }
+}

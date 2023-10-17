@@ -1,7 +1,7 @@
 import "../atoms/label.js";
 import "../atoms/title.js";
 
-class SearchInput extends HTMLElement {
+export class SearchInput extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });

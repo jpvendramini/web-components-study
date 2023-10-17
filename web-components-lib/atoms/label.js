@@ -4,7 +4,7 @@ const sizes = {
   large: "4rem",
 };
 
-class LabelComponent extends HTMLElement {
+export class LabelComponent extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });

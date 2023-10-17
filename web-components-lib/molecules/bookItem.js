@@ -1,7 +1,7 @@
 import "../atoms/label.js";
 import "../atoms/title.js";
 
-class BookItem extends HTMLElement {
+export class BookItem extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });

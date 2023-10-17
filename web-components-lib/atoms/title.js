@@ -6,7 +6,7 @@ const sizes = {
   large: "4rem",
 };
 
-class TitleComponent extends HTMLElement {
+export class TitleComponent extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
