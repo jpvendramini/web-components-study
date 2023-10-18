@@ -1,11 +1,9 @@
-import "../atoms/label.js";
-import "../atoms/title.js";
-
-export class SearchInput extends HTMLElement {
+export default class SearchInput extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
+      <!-- Your existing HTML template -->
       <style>
         .searchInputContainer {
           position: relative;
@@ -36,40 +34,47 @@ export class SearchInput extends HTMLElement {
         }
       </style>
       <div class="searchInputContainer">
-        <img src="../web-components-lib/assets/icons/search.svg" alt="Search icon" width="18px" height="17px" style="margin-left:.5rem">
+        <img src="./icons/search.svg" alt="Search icon" width="18px" height="17px" style="margin-left:.5rem">
         <input type="text" class="searchInput" placeholder="Search a book by its name or author">
       </div>
     `;
     this.inputElement = this.shadowRoot.querySelector("input");
-    
+
     // Initialize attributes for value and onChange function
-    this.value = "";
-    
+    this._value = ""; // Use an underscore to avoid naming conflicts with the setter
+    this._onChange = null; // Initialize onChange as null
+
     // Attach an event listener to handle changes in the input
     this.inputElement.addEventListener("input", this.handleInput.bind(this));
   }
-  
-  // Define a setter for the 'value' attribute
+
+  // Define a setter and getter for the 'value' attribute
   set value(newValue) {
     this.setAttribute("value", newValue);
     this.inputElement.value = newValue;
+    this._value = newValue;
   }
 
-  // Define a getter for the 'value' attribute
   get value() {
-    return this.getAttribute("value");
+    return this._value;
   }
 
-  // Handle the input event and dispatch a custom event
+  // Define a setter and getter for the 'onChange' prop
+  set onChange(handler) {
+    this._onChange = handler;
+  }
+
+  get onChange() {
+    return this._onChange;
+  }
+
   handleInput(event) {
     this.value = event.target.value;
-    
-    // Dispatch a custom event to notify changes
-    this.dispatchEvent(new CustomEvent("value-changed", {
-      detail: event.target.value,
-      bubbles: true,
-      composed: true
-    }));
+
+    // Call the onChange function if it's provided
+    if (this.onChange) {
+      this.onChange(this.value);
+    }
   }
 }
 

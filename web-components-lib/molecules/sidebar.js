@@ -2,7 +2,7 @@ import "../atoms/label.js";
 import "../atoms/title.js";
 import "../atoms/logo.js";
 
-export class Sidebar extends HTMLElement {
+export default class Sidebar extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });

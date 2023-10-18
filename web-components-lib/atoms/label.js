@@ -1,10 +1,10 @@
-const sizes = {
+const labelSizes = {
   small: "0.625rem",
   medium: "0.875rem",
   large: "4rem",
 };
 
-export class LabelComponent extends HTMLElement {
+export default class LabelComponent extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -36,7 +36,7 @@ export class LabelComponent extends HTMLElement {
 
   // Define a getter and setter for the size property
   get size() {
-    return sizes[this.getAttribute("size")] || sizes.medium; // Default size
+    return labelSizes[this.getAttribute("size")] || labelSizes.medium; // Default size
   }
 
   set size(value) {

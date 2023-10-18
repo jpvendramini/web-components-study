@@ -1,18 +1,15 @@
-import "./label.js";
-
-const sizes = {
+const titleSizes = {
   small: "0.75rem",
   medium: "1.25rem",
   large: "4rem",
 };
 
-export class TitleComponent extends HTMLElement {
+export default class TitleComponent extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
       <style>
-        /* Shadow DOM CSS */
         .title {
           font-weight: bold;
           font-family: 'Libre Baskerville', serif;
@@ -38,7 +35,7 @@ export class TitleComponent extends HTMLElement {
 
   // Define a getter and setter for the size property
   get size() {
-    return sizes[this.getAttribute("size")] || sizes.medium; // Default size
+    return titleSizes[this.getAttribute("size")] || titleSizes.medium; // Default size
   }
 
   set size(value) {

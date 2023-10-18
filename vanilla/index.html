@@ -193,18 +193,15 @@
 
         // Set a new timer to log the value after 3 seconds with no changes
         searchInputTimer = setTimeout(() => {
-          fetchSearchedData(event.detail)
-        }, 3000); // 3000 milliseconds (3 seconds)
+          fetchSearchedData(event)
+        }, 1000); // 3000 milliseconds (3 seconds)
       }
 
-      // Wait for the DOM to load before adding the event listener
-      document.addEventListener("DOMContentLoaded", function() {
-        const searchInput = document.querySelector("search-input-component");
-
-        // Listen for the custom event "value-changed" and call the handler
-        searchInput.addEventListener("value-changed", handleSearchInputChange);
-        fetchSearchedData("programming");
-      });
+      const searchInput = document.querySelector("search-input-component");
+      
+      searchInput.onChange = (value) => handleSearchInputChange(value);
+      
+      fetchSearchedData("programming");
     </script>
 
   </body>

@@ -1,4 +1,4 @@
-export class Logo extends HTMLElement {
+export default class Logo extends HTMLElement {
     constructor() {
       super();
       this.attachShadow({ mode: "open" });
@@ -20,8 +20,8 @@ export class Logo extends HTMLElement {
   
     render(selected) {
       const IMG_PATH = selected
-        ? "../web-components-lib/assets/icons/bookshelf-selected-logo.svg"
-        : "../web-components-lib/assets/icons/bookshelf-unselected-logo.svg";
+        ? "./icons/bookshelf-selected-logo.svg"
+        : "./icons/bookshelf-unselected-logo.svg";
   
         const template = `
             <img src="${IMG_PATH}" alt="Logo icon" width="43.224px" height="69.333px">
