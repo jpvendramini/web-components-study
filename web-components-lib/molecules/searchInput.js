@@ -34,7 +34,7 @@ export default class SearchInput extends HTMLElement {
         }
       </style>
       <div class="searchInputContainer">
-        <img src="./icons/search.svg" alt="Search icon" width="18px" height="17px" style="margin-left:.5rem">
+        <img src="/build/icons/search.svg" alt="Search icon" width="18px" height="17px" style="margin-left:.5rem">
         <input type="text" class="searchInput" placeholder="Search a book by its name or author">
       </div>
     `;

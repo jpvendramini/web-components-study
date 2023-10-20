@@ -7,6 +7,10 @@ export default class BookItem extends HTMLElement {
     this.attachShadow({ mode: "open" });
   }
 
+  connectedCallback() {
+    this.render();
+  }
+
   // Define the props using getters and setters
   get title() {
     return this.getAttribute("title") || "Default Title";
@@ -14,6 +18,7 @@ export default class BookItem extends HTMLElement {
 
   set title(value) {
     this.setAttribute("title", value);
+    this.render();
   }
 
   get label() {
@@ -22,14 +27,19 @@ export default class BookItem extends HTMLElement {
 
   set label(value) {
     this.setAttribute("label", value);
+    this.render();
   }
 
   get path() {
-    return this.getAttribute("path") || "https://www.dbooks.org/img/books/5635349929s.jpg";
+    return (
+      this.getAttribute("path") ||
+      "https://www.dbooks.org/img/books/5635349929s.jpg"
+    );
   }
 
   set path(value) {
     this.setAttribute("path", value);
+    this.render();
   }
 
   // Define the onClick property to handle click events
@@ -50,36 +60,47 @@ export default class BookItem extends HTMLElement {
     }
   }
 
-  connectedCallback() {
-    this.render();
+  static get observedAttributes() {
+    return ["title", "label", "path"];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    // // Update properties, not attributes
+    // if (name === "title") {
+    //   this.title = newValue;
+    // } else if (name === "label") {
+    //   this.label = newValue;
+    // } else if (name === "path") {
+    //   this.path = newValue;
+    // }
   }
 
   render() {
     this.shadowRoot.innerHTML = `
-      <style>
-        .bookItem {
-          display: flex; 
-          flex-direction: column; 
-          cursor: pointer; 
-          width: 150px; 
-          gap: 0.8rem;
-          align-items: center;
-          padding: 5px;
-        }
-        .bookItem:hover{
-          background: rgba(0,0,0,0.1);
-        }
-        .bookItemTextContainer {
-          width:150px; display:flex; flex-direction: column; gap: 5px; line-height:15px
-        }
-      </style>
-      <div class="bookItem">
-        <img src="${this.path}" width="119px" height="160px"/>
-        <div class="bookItemTextContainer">      
-          <title-component text="${this.title}" size="small" bold ellipsed></title-component>
-          <label-component text="${this.label}" size="small" bold ellipsed color="#7E7E7E" ></label-component>
-        </div>
-      </div>
+    <style>
+    .bookItem {
+      display: flex; 
+      flex-direction: column; 
+      cursor: pointer; 
+      width: 150px; 
+      gap: 0.8rem;
+      align-items: center;
+      padding: 5px;
+    }
+    .bookItem:hover{
+      background: rgba(0,0,0,0.1);
+    }
+    .bookItemTextContainer {
+      width:150px; display:flex; flex-direction: column; gap: 5px; line-height:15px
+    }
+  </style>
+  <div class="bookItem">
+    <img src="${this.path}" width="119px" height="160px"/>
+    <div class="bookItemTextContainer">      
+      <title-component text="${this.title}" size="small" bold ellipsed></title-component>
+      <label-component text="${this.label}" size="small" bold ellipsed color="#7E7E7E" ></label-component>
+    </div>
+  </div>
     `;
   }
 }

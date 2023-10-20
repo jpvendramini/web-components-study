@@ -20,8 +20,8 @@ export default class Logo extends HTMLElement {
   
     render(selected) {
       const IMG_PATH = selected
-        ? "./icons/bookshelf-selected-logo.svg"
-        : "./icons/bookshelf-unselected-logo.svg";
+        ? "/build/icons/bookshelf-selected-logo.svg"
+        : "/build/icons/bookshelf-unselected-logo.svg";
   
         const template = `
             <img src="${IMG_PATH}" alt="Logo icon" width="43.224px" height="69.333px">
