@@ -24,7 +24,6 @@ const Home = () => {
         })
         .then((data) => {
           const sidebar = document.querySelector("sidebar-component");
-          console.log(data);
           // Update state or component as needed with book details
           setCurrentBookId(data.id);
           sidebar.bookInfo = data;

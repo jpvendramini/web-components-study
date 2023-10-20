@@ -110,7 +110,6 @@ export default {
     handleSearchInputChange(event) {
       this.searchQuery = event.target.value;
 
-      console.log(event.target.value);
       // Clear previous timer, if it exists
       if (this.searchInputTimer) {
         clearTimeout(this.searchInputTimer);

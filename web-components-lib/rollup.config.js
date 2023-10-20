@@ -52,6 +52,18 @@ export default {
         "./molecules/sidebar.js": "Sidebar",
       },
     },
+    {
+      file: "../svelte/svelte-web-components-lib/static/build/bundle.js",
+      format: "cjs",
+      globals: {
+        "./atoms/label.js": "LabelComponent",
+        "./atoms/logo.js": "Logo",
+        "./atoms/title.js": "TitleComponent",
+        "./molecules/bookItem.js": "BookItem",
+        "./molecules/searchInput.js": "SearchInput",
+        "./molecules/sidebar.js": "Sidebar",
+      },
+    },
   ],
   plugins: [
     terser(),
@@ -62,6 +74,7 @@ export default {
         { src: "./assets/icons/*.svg", dest: "../vue/vue-web-components-lib/public/build/icons" },
         { src: "./assets/icons/*.svg", dest: "../angular/angular-web-components-lib/src/build/icons" },
         { src: "./assets/icons/*.svg", dest: "../next/next-web-components-lib/public/build/icons" },
+        { src: "./assets/icons/*.svg", dest: "../svelte/svelte-web-components-lib/static/build/icons" },
       ],
     }),
   ],
