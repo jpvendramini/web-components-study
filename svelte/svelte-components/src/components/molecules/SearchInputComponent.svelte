@@ -3,9 +3,9 @@
 
   import { onMount } from "svelte";
 
-  let value = "";
-  let onChange = null;
-  let inputValue = value;
+  export let value = "";
+  export let onChange = null;
+  export let inputValue = value;
 
   const inputRef = undefined;
 

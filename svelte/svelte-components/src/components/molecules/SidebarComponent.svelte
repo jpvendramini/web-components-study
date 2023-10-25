@@ -5,11 +5,7 @@
   import TitleComponent from "../atoms/TitleComponent.svelte";
   import LabelComponent from "../atoms/LabelComponent.svelte";
 
-  export let bookInfo = {};
-
-  // @ts-ignore
-  const { title, subtitle, authors, description, year, pages, download } =
-    bookInfo;
+  export let bookInfo = "";
 </script>
 
 <div class="sidebar">
@@ -21,30 +17,34 @@
     >
       <div class="bookDescription">
         <LabelComponent text="Title:" size="medium" color="white" bold />
-        <LabelComponent text={title} size="medium" color="white" />
+        <LabelComponent text={bookInfo.title} size="medium" color="white" />
       </div>
       <div class="bookDescription">
         <LabelComponent text="Subtitle:" size="medium" color="white" bold />
-        <LabelComponent text={subtitle} size="medium" color="white" />
+        <LabelComponent text={bookInfo.subtitle} size="medium" color="white" />
       </div>
       <div class="bookDescription">
         <LabelComponent text="Authors:" size="medium" color="white" bold />
-        <LabelComponent text={authors} size="medium" color="white" />
+        <LabelComponent text={bookInfo.authors} size="medium" color="white" />
       </div>
       <div class="bookDescription">
         <LabelComponent text="Description:" size="medium" color="white" bold />
-        <LabelComponent text={description} size="medium" color="white" />
+        <LabelComponent
+          text={bookInfo.description}
+          size="medium"
+          color="white"
+        />
       </div>
       <div>
         <LabelComponent text="Year:" size="medium" color="white" bold />
-        <LabelComponent text={year} size="medium" color="white" />
+        <LabelComponent text={bookInfo.year} size="medium" color="white" />
       </div>
       <div>
         <LabelComponent text="Pages:" size="medium" color="white" bold />
-        <LabelComponent text={pages} size="medium" color="white" />
+        <LabelComponent text={bookInfo.pages} size="medium" color="white" />
       </div>
-      <a class="button" href={download} target="_blank">Download</a>
     </div>
+    <a class="button" href={bookInfo.download} target="_blank">Download</a>
   {:else}
     <LabelComponent
       text="(Select a book to see its specifications here!)"

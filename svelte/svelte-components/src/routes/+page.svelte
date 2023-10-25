@@ -23,6 +23,27 @@
   let searchedValue = "";
   let currentBookId = "";
 
+  async function getBookDetails(bookId) {
+    if (currentBookId !== bookId) {
+      try {
+        const response = await fetch(
+          "https://www.dbooks.org/api/book/" + bookId
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        bookInfo = data;
+        currentBookId = data.id;
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      bookInfo = null;
+      currentBookId = "";
+    }
+  }
+
   function fetchData() {
     fetch("https://www.dbooks.org/api/recent")
       .then((response) => {
@@ -84,13 +105,6 @@
       fetchSearchedData(event);
     }, 1000); // 1000 milliseconds (1 second)
   }
-
-  /**
-   * @param {any} id
-   */
-  function getBookDetails(id) {
-    throw new Error("Function not implemented.");
-  }
 </script>
 
 <div>
@@ -104,11 +118,10 @@
     <div class="books-container">
       {#each recentBooks as book (book.id)}
         <BookItemComponent
-          key={book.id}
           title={book.title}
           label={book.authors}
           path={book.image}
-          on:click={() => getBookDetails(book.id)}
+          onClick={() => getBookDetails(book.id)}
         />
       {/each}
     </div>
@@ -122,7 +135,7 @@
       <div>
         <SearchInputComponent
           value={searchedValue}
-          on:input={handleSearchInputChange}
+          onChange={handleSearchInputChange}
         />
       </div>
     </div>
@@ -132,7 +145,7 @@
           title={book.title}
           label={book.authors}
           path={book.image}
-          on:click={() => getBookDetails(book.id)}
+          onClick={() => getBookDetails(book.id)}
         />
       {/each}
     </div>

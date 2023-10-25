@@ -14,7 +14,10 @@
   }
 </script>
 
-<div class="bookItem" on:click={handleClick}>
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div class="bookItem" on:click={onClick}>
   <img src={path} alt="Book cover" width="119px" height="160px" />
   <div class="bookItemTextContainer">
     <TitleComponent text={title} size="small" bold ellipsed />

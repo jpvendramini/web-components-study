@@ -1,5 +1,5 @@
 <script>
-  let selected = false;
+  export let selected = false;
 
   const IMG_PATH = selected
     ? "/icons/bookshelf-selected-logo.svg"
