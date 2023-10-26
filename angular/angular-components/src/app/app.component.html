@@ -1,0 +1,73 @@
+<div style="display: flex; justify-content: center">
+  <div style="padding: 50px; max-width: 57.375rem; margin-right: 22.625rem">
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <div style="line-height: 25px">
+        <title-component text="Most recent books"></title-component>
+        <label-component
+          text="Here you can visualize the most recent added books."
+        ></label-component>
+      </div>
+      <div
+        class="books-container"
+        style="
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          row-gap: 20px;
+          margin-bottom: 40px;
+        "
+      >
+        <book-item-component
+          *ngFor="let book of recentBooks"
+          [title]="book.title"
+          [label]="book.authors"
+          [path]="book.image"
+          (click)="getBookDetails(book.id)"
+        ></book-item-component>
+      </div>
+    </div>
+    <div
+      style="
+        display: flex;
+        align-items: end;
+        justify-content: space between;
+        margin-bottom: 20px;
+      "
+    >
+      <div>
+        <title-component text="Search for books"></title-component>
+        <label-component
+          text="Here you can search your book of interest by the name of the author or book title."
+        ></label-component>
+      </div>
+      <div>
+        <search-input-component
+        (input)="handleSearchInputChange($event)"
+        ></search-input-component>
+      </div>
+    </div>
+    <div
+      class="searched-books-container"
+      style="
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        row-gap: 20px;
+        margin-bottom: 40px;
+      "
+    >
+      <div *ngFor="let book of searchedBooks; let i = index">
+        <book-item-component
+          [title]="book.title"
+          [label]="book.authors"
+          [path]="book.image"
+          (click)="getBookDetails(book.id)"
+        ></book-item-component>
+      </div>
+    </div>
+  </div>
+</div>
+<sidebar-component [bookInfo]="sidebarBookInfo"></sidebar-component>
+<router-outlet></router-outlet>
